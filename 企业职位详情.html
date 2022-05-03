@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>job</title>
+    <!-- css写在外部的文件里 -->
+</head>
+
+<body>
+
+    <script>
+        window.onload = function() {
+            //保存按钮
+            document.getElementById("save").onclick = function() {
+                $.ajax({
+                    type: "POST",
+                    url: "xxxxxxxx",
+
+                    data: { //JSON对象
+                        delete: 1,
+                        jobName: document.getElementById("jobName").value,
+                        salary: document.getElementById("sal").value,
+                        duty: document.getElementById("duty").value,
+                        requirement: document.getElementById("require").value,
+                        workplace: document.getElementById("workplace").value,
+                    },
+                    //请求成功则调用函数
+                    success: function(data) {
+                        if (data == 1) {
+                            alert('保存成功')
+                            jobName = document.getElementById("jobName").value
+                            salary = document.getElementById("sal").value
+                            duty = document.getElementById("duty").value
+                            requirement = document.getElementById("require").value
+                            workplace = document.getElementById("workplace").value
+                            setCookie("jobName", jobName)
+                            setCookie("sal", salary)
+                            setCookie("duty", duty)
+                            setCookie("require", requirement)
+                            setCookie("workplace", workplace)
+                        } else {
+                            alert("保存失败")
+                        }
+                    }
+                })
+            }
+
+            //删除按钮
+            document.getElementById("delete").onclick = function() {
+                $.ajax({
+                    type: "POST",
+                    url: "xxxxxxxx",
+                    //给后端上传delete=1，判断是否删除职位信息
+                    data: {
+                        delete: 1,
+                        resumeName: document.getElementById("jobName").value
+                    },
+                    success: function(data) {
+                        if (data == 1) {
+                            alert('删除成功')
+                        } else {
+                            alert('删除失败')
+                        }
+                    }
+                })
+            }
+        }
+    </script>
+
+    <div class="main">
+        岗位名称:<input type="text" id="jobName" /> <br><br> 薪酬及亮点:
+        <br><textarea id="sal"></textarea> <br><br> 岗位职责:
+        <br><textarea id="duty"></textarea> <br><br> 岗位要求:
+        <br><textarea id="require"></textarea> <br><br> 工作地点:
+        <br><textarea id="workplace"></textarea> <br><br>
+    </div>
+    <div class="buttons">
+        <button type="button" id="save">保存</button>
+        <button type="button" id="delete">删除</button>
+    </div>
+</body>
+
+</html>

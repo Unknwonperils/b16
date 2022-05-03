@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>login</title>
+    <!-- 最好把css写在外面的css文件里 然后在这里调用 -->
+</head>
+
+<body>
+    <!-- 有需要的元素可以自行添加，不要修改下面的id****** -->
+    <script>
+        window.onload = function() {
+            var emailErrorSpan = document.getElementById("emailError");
+
+            // 给id="email"的节点绑定blur事件
+            var emailElt = document.getElementById("email");
+            emailElt.onblur = function() {
+                    // 获取用户名
+                    var email = emailElt.value;
+                    // 去除掉前后空白
+                    email = email.trim();
+                    // 用户名不能为空,不能为空串
+                    //if(email.length == 0){}
+                    if (email == "") {
+                        emailErrorSpan.innerHTML = "<font color ='red'>邮箱不能为空！</font>";
+                    } else {
+                        var regExp = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+                        var test = regExp.test(email)
+                        if (test) {
+                            emailErrorSpan.innerHTML = "";
+                        } else {
+                            emailErrorSpan.innerHTML = "<font color = 'red' > 请输入正确的邮箱格式！</font>"
+                        }
+                    }
+                }
+                // 获得焦点:清空span的错误信息.
+            emailElt.onfocus = function() {
+                emailErrorSpan.innerHTML = "";
+            }
+
+
+            var passwordErrorSpan = document.getElementById("passwordError");
+
+            // 给id="userpwd"的节点绑定blur事件
+            var pwdElt = document.getElementById("password");
+            pwdElt.onblur = function() {
+                    var pwd = pwdElt.value;
+                    // 去除掉前后空白
+                    pwd = pwd.trim();
+                    if (pwd == "") {
+                        passwordErrorSpan.innerHTML = "<font color ='red'>密码不能为空！</font>";;
+                    } else {
+                        var regExp = /^[A-Za-z0-9]+$/
+                        var ok = regExp.test(pwd)
+                        if (ok) {
+                            // 合法
+                            passwordErrorSpan.innerHTML = "";
+                        } else {
+                            // 不合法
+                            passwordErrorSpan.innerHTML = "<font color ='red'>密码只能由数字或英文字母组成！</font>";
+                        }
+                    }
+                }
+                // 获得焦点:清空span的错误信息.
+            pwdElt.onfocus = function() {
+                passwordErrorSpan.innerHTML = "";
+            }
+
+
+            document.getElementById("loginBtn").onclick = function() {
+                document.getElementById("email").focus();
+                document.getElementById("email").blur();
+
+                document.getElementById("password").focus();
+                document.getElementById("password").blur();
+
+                if (emailErrorSpan.innerHTML == "" && passwordErrorSpan.innerHTML == "") {
+                    /* 提交URL */
+                    $.ajax({
+                        type: "POST",
+                        url: "xxxxxxxx",
+                        // dataType: 'json',
+                        data: { //JSON对象
+                            email: document.getElementById("email").value,
+                            password: document.getElementById("userpwd").value
+                        },
+                        //请求成功时调用的函数
+                        success: function(data) {
+                            if (data == 1) {
+                                alert("登录成功！")
+                                email = document.getElementById("email").value
+                                password = document.getElementById("password").value
+                                setCookie("email", email)
+                                setCookie("password", password)
+                                window.location = "个人中心.html"
+                            } else {
+                                alert("用户名或密码错误！")
+                            }
+                        }
+                    })
+                }
+            }
+
+        }
+    </script>
+    <div class="main">
+        <h1>登录企业账号</h1><br><br> 企业邮箱: <input type="text" name="email" id="email" /><span id="emailError"></span><br><br> 密码: <input type="password" name="password" id="password" /><span id="passwordError"></span><br><br>
+        <input type="button" name="loginBtn" id="loginBtn" value="登录" />
+        <a href="企业注册.html">没有账号？</a>
+    </div>
+</body>
+
+</html>
